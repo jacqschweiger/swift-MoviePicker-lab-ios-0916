@@ -39,6 +39,8 @@ class ViewController: UIViewController {
 // MARK: - Actions
 extension ViewController {
     
+    //TODO
+    
     func handleTap(sender: UIButton) {
         
         for label in movieLabels {
@@ -103,15 +105,17 @@ extension ViewController {
             
             guard let movieData = data else { return }
             
-            let json = try! JSONSerialization.jsonObject(with: movieData, options: .allowFragments) as! [String : Any]
-            
-            let posterString = json["Poster"] as! String
-            
-            let posterURL = URL(string: posterString)!
-            
-            self.button.isHidden = true
-            
-            self.downloadImage(at: posterURL)
+            DispatchQueue.main.async {
+                let json = try! JSONSerialization.jsonObject(with: movieData, options: .allowFragments) as! [String : Any]
+                
+                let posterString = json["Poster"] as! String
+                
+                let posterURL = URL(string: posterString)!
+                
+                self.button.isHidden = true
+                
+                self.downloadImage(at: posterURL)
+            }
             
             }.resume()
     }
@@ -126,10 +130,13 @@ extension ViewController {
             
             guard let imageData = data else { return }
             
-            let image = UIImage(data: imageData)!
-            
-            self.display(image: image)
-            
+            DispatchQueue.main.async {
+                
+                let image = UIImage(data: imageData)!
+                
+                self.display(image: image)
+                
+            }
             }.resume()
     }
     
